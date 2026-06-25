@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDpedia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slider-bg {
+            background-size: cover;
+            background-position: center;
+            animation: flashCards 10s infinite alternate;
+        }
+        @keyframes flashCards {
+            0% { background-image: url('https://images.unsplash.com/photo-1633409361618-c73427e4e206?auto=format&fit=crop&w=800&q=80'); opacity: 0.8;}
+            50% { background-image: url('https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80'); opacity: 0.9;}
+            100% { background-image: url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'); opacity: 0.8;}
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <div id="home-page" class="min-h-screen flex flex-col justify-between slider-bg relative">
+        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div class="relative z-10 flex flex-col items-center justify-center flex-grow mt-10">
+            <h1 class="text-6xl font-bold text-white mb-2 tracking-wider">IDpedia</h1>
+            <p class="text-gray-300 mb-10 text-lg">Smart ID Card Data Management</p>
+            <div class="space-y-4 w-64">
+                <button onclick="showSection('official-login')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition">1. Official Sign In</button>
+                <button onclick="showSection('school-login')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition">2. School Sign In</button>
+            </div>
+        </div>
+        <footer class="relative z-10 bg-gray-900 bg-opacity-90 text-white text-center py-6 mt-10">
+            <h3 class="font-bold text-xl mb-2">IDpedia</h3>
+            <p>Kuttiady, Kozhikode, Vadakara</p>
+            <p>Email: roopamkty@gmail.com | Mob: +91 989590834</p>
+        </footer>
+    </div>
+
+    <!-- Official Login & Dashboard -->
+    <div id="official-login" class="min-h-screen flex items-center justify-center hidden bg-gray-200">
+        <div class="bg-white p-8 rounded-xl shadow-xl w-96">
+            <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Official Sign In</h2>
+            <input type="text" id="off-user" placeholder="User ID" class="w-full mb-4 px-4 py-2 border rounded">
+            <input type="password" id="off-pass" placeholder="Password" class="w-full mb-6 px-4 py-2 border rounded">
+            <button onclick="officialLogin()" class="w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700">Go to sign in</button>
+            <button onclick="showSection('home-page')" class="w-full mt-4 text-gray-500 text-sm hover:underline">Back to Home</button>
+            <p id="off-err" class="text-red-500 text-sm mt-2 text-center hidden">Invalid User ID or Password</p>
+        </div>
+    </div>
+
+    <div id="official-dashboard" class="min-h-screen hidden bg-gray-50 p-6">
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h2 class="text-2xl font-bold text-blue-700">Official Dashboard</h2>
+                <button onclick="showSection('home-page')" class="bg-red-500 text-white px-4 py-1 rounded">Logout</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg mb-4">Add New School</h3>
+                    <input type="text" id="school-name" placeholder="School Name" class="w-full mb-3 px-3 py-2 border rounded">
+                    <input type="text" id="school-code" placeholder="School Code" class="w-full mb-3 px-3 py-2 border rounded">
+                    <input type="text" id="teacher-user" placeholder="Teacher Username" class="w-full mb-3 px-3 py-2 border rounded">
+                    <input type="password" id="teacher-pass" placeholder="Teacher Password" class="w-full mb-3 px-3 py-2 border rounded">
+                    <button onclick="saveSchool()" class="bg-green-600 text-white px-4 py-2 rounded w-full font-bold">Save School Details</button>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg mb-4">Download Data</h3>
+                    <input type="text" id="export-class" placeholder="Enter Class" class="w-full mb-3 px-3 py-2 border rounded">
+                    <button class="bg-green-700 text-white px-4 py-2 rounded w-full font-bold mb-3" onclick="alert('Feature coming soon!')">Download Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- School Login & Dashboard -->
+    <div id="school-login" class="min-h-screen flex items-center justify-center hidden bg-gray-200">
+        <div class="bg-white p-8 rounded-xl shadow-xl w-96">
+            <h2 class="text-2xl font-bold mb-6 text-center text-green-600">School Sign In</h2>
+            <input type="text" id="sch-user" placeholder="Username" class="w-full mb-4 px-4 py-2 border rounded">
+            <input type="password" id="sch-pass" placeholder="Password" class="w-full mb-6 px-4 py-2 border rounded">
+            <button onclick="schoolLogin()" class="w-full bg-green-600 text-white font-bold py-2 rounded hover:bg-green-700">Login</button>
+            <button onclick="showSection('home-page')" class="w-full mt-4 text-gray-500 text-sm hover:underline">Back to Home</button>
+            <p id="sch-err" class="text-red-500 text-sm mt-2 text-center hidden">Invalid access.</p>
+        </div>
+    </div>
+
+    <div id="school-dashboard" class="min-h-screen hidden bg-gray-50 p-6">
+        <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h2 class="text-2xl font-bold text-green-700">Student ID Database</h2>
+                <button onclick="showSection('home-page')" class="bg-red-500 text-white px-4 py-1 rounded">Logout</button>
+            </div>
+            <form id="studentForm" class="space-y-4" onsubmit="saveStudent(event)">
+                <input type="text" id="std-name" placeholder="Student Name" required class="w-full px-3 py-2 border rounded">
+                <input type="text" id="std-class" placeholder="Class" required class="w-full px-3 py-2 border rounded">
+                <select id="std-gender" onchange="updateGuardianLabel()" required class="w-full px-3 py-2 border rounded">
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <input type="text" id="std-guardian" placeholder="Guardian Name" required class="w-full px-3 py-2 border rounded">
+                <input type="text" id="std-house" placeholder="House Name" required class="w-full px-3 py-2 border rounded">
+                <input type="text" id="std-place" placeholder="Place" required class="w-full px-3 py-2 border rounded">
+                <input type="tel" id="std-mobile" placeholder="Mobile Number" required class="w-full px-3 py-2 border rounded">
+                <input type="text" id="std-admn" placeholder="Admission Number" required class="w-full px-3 py-2 border rounded">
+                
+                <div class="border p-4 rounded bg-gray-50 text-center">
+                    <label class="bg-blue-100 text-blue-700 py-2 px-4 rounded cursor-pointer">
+                        📁 Choose Photo
+                        <input type="file" accept="image/*" class="hidden" onchange="handlePhoto(this)">
+                    </label>
+                    <p id="photo-status" class="text-sm mt-2"></p>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded">Save Data</button>
+            </form>
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-lg font-bold mb-4">Saved Students</h3>
+                <div id="saved-students" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhotoData = null;
+
+        function showSection(id) {
+            ['home-page', 'official-login', 'official-dashboard', 'school-login', 'school-dashboard'].forEach(sec => document.getElementById(sec).classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function officialLogin() {
+            if (document.getElementById('off-user').value === 'Rajeesh' && document.getElementById('off-pass').value === '9083') {
+                showSection('official-dashboard');
+            } else {
+                document.getElementById('off-err').classList.remove('hidden');
+            }
+        }
+
+        function saveSchool() {
+            localStorage.setItem('schoolUser', document.getElementById('teacher-user').value);
+            localStorage.setItem('schoolPass', document.getElementById('teacher-pass').value);
+            alert('School saved!');
+        }
+
+        function schoolLogin() {
+            if (document.getElementById('sch-user').value === localStorage.getItem('schoolUser') && document.getElementById('sch-pass').value === localStorage.getItem('schoolPass')) {
+                showSection('school-dashboard');
+                renderStudents();
+            } else {
+                document.getElementById('sch-err').classList.remove('hidden');
+            }
+        }
+
+        function updateGuardianLabel() {}
+
+        function handlePhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => currentPhotoData = e.target.result;
+                reader.readAsDataURL(input.files[0]);
+                document.getElementById('photo-status').innerText = "Photo Selected: " + input.files[0].name;
+            }
+        }
+
+        function saveStudent(e) {
+            e.preventDefault();
+            const student = {
+                admn: document.getElementById('std-admn').value,
+                name: document.getElementById('std-name').value,
+                cls: document.getElementById('std-class').value,
+                gender: document.getElementById('std-gender').value,
+                guardian: document.getElementById('std-guardian').value,
+                house: document.getElementById('std-house').value,
+                place: document.getElementById('std-place').value,
+                mobile: document.getElementById('std-mobile').value,
+                photo: currentPhotoData 
+            };
+
+            // Localhost മാറ്റി /api/students ആക്കി 
+            fetch('/api/students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(student)
+            }).then(res => res.json()).then(data => {
+                alert(data.message);
+                document.getElementById('studentForm').reset();
+                renderStudents();
+            }).catch(err => alert("Error saving data"));
+        }
+
+        function renderStudents() {
+            const container = document.getElementById('saved-students');
+            container.innerHTML = '<p>Loading...</p>';
+            // Localhost മാറ്റി /api/students ആക്കി 
+            fetch('/api/students')
+                .then(res => res.json())
+                .then(students => {
+                    container.innerHTML = '';
+                    students.forEach(std => {
+                        container.innerHTML += `<div class="p-3 border rounded mb-2 bg-white flex justify-between">
+                            <div><p class="font-bold">${std.name}</p><p class="text-sm">Admn: ${std.admn}</p></div>
+                        </div>`;
+                    });
+                }).catch(err => container.innerHTML = '<p>Error loading data</p>');
+        }
+    </script>
+</body>
+</html>
